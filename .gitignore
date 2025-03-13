@@ -1,2 +1,7 @@
 __pycache__
 weather.csv
+recent_weather.csv
+
+images
+experiment_results
+saved_models
