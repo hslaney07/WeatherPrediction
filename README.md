@@ -48,10 +48,10 @@ Note: ChatGPT and DeepSeek were utilized to outline the initial code structure a
     - **Epochs**: This is the number of epochs used during training. Epoch values ranged from 100 to 200."
 - In total, there are **108 different configurations explored**. For each experiment, the following details were recorded: the model configuration (as described in the previous section), the final training loss (MSE), the final validation loss (MSE), the test loss (MSE), the test loss (MAE), and information about the worst prediction. The worst prediction was analyzed to check for any overlap or patterns.
 - To analyze performance, the top 5 configurations with the lowest test loss (MSE) were selected for further evaluation. Below are the details of these configurations:
-![Top 5 Performing Stuctures](images_for_readme\Initial_Experiment_Top5_Results.png)
+![Top 5 Performing Stuctures](images_for_readme/Initial_Experiment_Top5_Results.png)
 
 - Here is an image showing the performance of the best performing configuration. We are plotting the LSTM's predictions against the actual high temperature in Boston.
-![Top Performing Stucture - Boston Temperature High vs Prediction](images_for_readme\alldata_sl=30_hs=150_nl=2_lr=0.001_e=200.png)
+![Top Performing Stucture - Boston Temperature High vs Prediction](images_for_readme/alldata_sl=30_hs=150_nl=2_lr=0.001_e=200.png)
 
 **2. Second Experimentation**
 - Code for this can be found in **LSTM_Second_Experiment_config.py**
@@ -64,9 +64,9 @@ Note: ChatGPT and DeepSeek were utilized to outline the initial code structure a
     - **Epochs**: Varies from 200 to 250 to 300.
 -  In total, there are **54 different configurations explored**. The same information was recorded as the initial experiment.
 - To analyze performance, the top 5 configurations with the lowest test loss (MSE) were selected for further evaluation. Below are the details of these configurations:
-![Top 5 Performing Stuctures](images_for_readme\Second_Experiment_Top5_Results.png)
+![Top 5 Performing Stuctures](images_for_readme/Second_Experiment_Top5_Results.png)
 - Here is an image showing the performance of the best performing configuration. We are plotting the LSTM's predictions against the actual high temperature in Boston.
-![Top Performing Stucture 2 - Boston Temperature High vs Prediction](images_for_readme\alldata_sl=40_hs=150_nl=2_lr=0.001_e=200.png)
+![Top Performing Stucture 2 - Boston Temperature High vs Prediction](images_for_readme/alldata_sl=40_hs=150_nl=2_lr=0.001_e=200.png)
 
 
 ### Analysis of Experiments
@@ -99,5 +99,5 @@ For March 3/6-3/10, the actual temperature high was 55.99999993, 42.9999996,  40
 The model predicted: 51.34314414, 45.10479152, 47.59140912, 47.08315473, 49.40315381 for each date. 
 
 Thus, resulting in a **3.8236148922072273 test loss (MSE)**. The image below displays the actual temperature max vs the predicted temperature max.
-![Boston Weather Prediction on data collected after model trained](images_for_readme\model_on_collected_data_posttraining.png)
+![Boston Weather Prediction on data collected after model trained](images_for_readme/model_on_collected_data_posttraining.png)
 
