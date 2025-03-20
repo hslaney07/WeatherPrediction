@@ -238,7 +238,7 @@ Thus, resulting in a **62.742218 Test MSE Loss**.
 
 The image below displays the actual temperature max vs the predicted temperature max. As we can see, the model expects a linear increase in temperature as the season typically becomes warmer in March.
 
-![Simple Sine on Recent Data - Boston Temperature High vs Prediction](images_for_readme/Predictor_on_Recent_data.png)
+![Simple Sine on Recent Data - Boston Temperature High vs Prediction](images_for_readme/Predictor_on_Recent_Data.png)
 
  ### Vanilla RNN Performance
 The model configuration can be found in **RNN/RNN_Recent_Data.py**. It is the best performing model from the original training discussed above.
