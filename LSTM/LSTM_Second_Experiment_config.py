@@ -5,14 +5,13 @@ from train import train_and_test_model
 
 # setting up configurations for this experiment
 df_cols = [
-            ["TMAX"],
             ["TMAX", "AWND", "TAVG", "TMIN", "WT01", 'WT02', 'WT03', 'WT04', 'WT05', 'WT06', 'WT08', 'WT09'],
            ]
 
-seq_lengths = [5, 10, 30]
-hidden_sizes = [50, 100, 150]
+seq_lengths = [10, 30, 40]
+hidden_sizes = [100, 150]
 num_layers_list = [2, 6, 10]
-epochs_list = [100, 200]
+epochs_list = [200, 250, 300]
 lrs = [0.001]
 
 
@@ -24,7 +23,7 @@ all_configs = [
         "num_layers": num_layers,
         "num_epochs": num_epochs,
         "learning_rate": lr,
-        "experiment_name": "initial_experiment"
+        "experiment_name": "LSTM_second_experiment_results"
     }
     for df_cols, seq_length, hidden_size, num_layers, num_epochs, lr in itertools.product(
         df_cols, seq_lengths, hidden_sizes, num_layers_list, epochs_list, lrs
@@ -33,10 +32,11 @@ all_configs = [
 
 # before running training - make sure directories exist that are needed during training
 os.makedirs("experiment_results", exist_ok=True)
+os.makedirs("experiment_results/LSTM", exist_ok=True)
 os.makedirs("images", exist_ok=True)
-os.makedirs("images/initial_experiment", exist_ok=True)
+os.makedirs("images/LSTM_second_experiment_results", exist_ok=True)
 
-csv_file = "experiment_results/initial_experiment_results.csv"
+csv_file = "experiment_results/LSTM/LSTM_second_experiment_results.csv"
 
 with open(csv_file, mode="w", newline="") as file:
     writer = csv.writer(file)
