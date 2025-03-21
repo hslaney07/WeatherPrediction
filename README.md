@@ -171,31 +171,17 @@ Here is how the forward pass to calculate TMAX is done:
     d is the phase shift 
     b is the bias
 
-When we first ran this experiment, we ran it using MinMax scalar for TMAX to normalize our TMAX values to be between 0 and 1. After testing 24 different configurations, the best performing one (based on Test MSE) is shown below where the learning rate is 0.01 and epochs is 5000.
+After testing 21 different configurations, the best performing one (based on Test MSE) is shown below where the learning rate is 0.01 and epochs is 700.
 
 Here is how it performs on the training data. As expected it creates sine waves due to the seasonal patterns.
 
-![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Training_MINMAX.png)
+![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Training.png)
 
-Here is how it performs on the testing data. It appears to be a somewhat linear estimation as it expects a temperature increase from January to March.
+Here is how it performs on the testing data. Since sine predictors look at yearly seasonal changes, for this experiment, the test set is a complete year (Jan 2024 - Dec 2024). 
 
-**Test MSE**: 79.76174
+**Test MSE**: 275.16013
 
-![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Testing_Original.png)
-
-
-We also changed the scalar to be a StandardScaler. This normalize the TMAX value by transforming it to have a mean of 0 and a standard deviation of 1.
-After testing 24 different configurations, the best performing one (based on Test MSE) is shown below where the learning rate is 0.01 and epochs is 700.
-
-Here is how it performs on the training data. As expected it creates sine waves due to the seasonal patterns.
-
-![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Training_Standard.png)
-
-Here is how it performs on the testing data. This is an increasing but smoother curve than the linear one with the MinMax scaler.
-**Test MSE**: 112.629196
-
-![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Testing_Standard.png)
-
+![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Testing.png)
 
 ## Vanilla RNN
 
@@ -224,10 +210,9 @@ For March 3/6-3/15, the actual temperature high was **[56, 43, 41, 46, 62, 62, 5
 ### Summary
 Here is a brief overview of the performance on predicting weather data for this time frame. One thing to note is that the autoregressors are given no actual temperature maxs for this time frame unlike the other models.
 
-As we can see, the LSTM performs the best with the simple RNN in second.
+As we can see, the LSTM performs the best with the simple RNN in second. The simple predictor performs significantly worse than the other models.
 
-![Model Performances on Recent Data](images_for_readme/Overall_Model_Performance_Recent_Data.png)
-
+![Model Performances on Recent Data](images_for_readme/Model_Performance_Summary.png)
 
 ### LSTM Performance
 The model used for this is the best performing model from the second experiment. The exact configuration can be found in **LSTM/LSTM_Recent_Data_Experiment.py**.
@@ -245,13 +230,12 @@ The image below displays the actual temperature max vs the predicted temperature
 The model configuration can be found in **Simple/SimplePredictor_On_Recent_Data.py**. It is the best performing model from the original training discussed above for MinMax Scalar.
 
 The Simple Sine Predictor model predicted: 
-**[49.996452, 50.359135, 50.720673, 51.081024, 51.440166, 51.79807, 52.154705, 52.510036, 52.864044, 53.216698]** 
+**[28.613781, 29.079302, 29.554464, 30.039137, 30.533165, 31.036411, 31.54872, 32.069946, 32.59993, 33.13852]** 
+Thus, resulting in a **477.37686 Test MSE Loss**. 
 
-Thus, resulting in a **62.74224 Test MSE Loss**. 
+The image below displays the actual temperature max vs the predicted temperature max. As we can see, the model expects a somewhat linear increase in temperature as the season typically becomes warmer in March. However, it is expects the begining of march to be significantly colder than it actually is.
 
-The image below displays the actual temperature max vs the predicted temperature max. As we can see, the model expects a linear increase in temperature as the season typically becomes warmer in March.
-
-![Simple Sine on Recent Data - Boston Temperature High vs Prediction](images_for_readme/Predictor_Recent_Data.png)
+![Simple Sine on Recent Data - Boston Temperature High vs Prediction](images_for_readme/Predictor_On_Recent_Data.png)
 
  ### Vanilla RNN Performance
 The model configuration can be found in **RNN/RNN_Recent_Data.py**. It is the best performing model from the original training discussed above.

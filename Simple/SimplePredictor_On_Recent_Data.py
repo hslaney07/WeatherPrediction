@@ -22,20 +22,17 @@ def prepare_data():
     # extract the day of the year (0-364.2422)
     df['DayOfYear'] = df['DATE'].dt.dayofyear - 1  
 
-    # leap years (e.g., 2020, 2024)
-    leap_years = [2020, 2024]
-    df['DayOfYear'] = df.apply(
-        lambda row: row['DayOfYear'] - 1 if row['DATE'].year in leap_years and row['DayOfYear'] >= 60 else row['DayOfYear'],
-        axis=1
-    )
+    def is_leap_year(year):
+        return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
-    # normalize DayOfYear for the sine function
-    df['DayOfYear'] = df['DayOfYear'] / 365.2422 
+    df["Year"] = df["DATE"].dt.year  # Extract year
+    df["TotalDays"] = df["Year"].apply(lambda y: 366 if is_leap_year(y) else 365)  # Get total days in year
+
+    df["DayOfYear"] = (df["DayOfYear"] * 365) // df["TotalDays"] 
 
     # normalize TMAX
     scaler = MinMaxScaler(feature_range=(-1, 1))
     df['TMAX'] = scaler.fit_transform(df[['TMAX']])
-
 
     num_test_dates = df_test.shape[0]
     train = df[:-num_test_dates]
@@ -57,7 +54,7 @@ def prepare_data():
     return X_train, Y_train, X_val, Y_val, X_test, Y_test, df, scaler
 
 # setting up configurations for this experiment
-epochs_list = [5000]
+epochs_list = [700]
 lrs = [0.01]
 
 all_configs = [

@@ -1,3 +1,4 @@
+import calendar
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -19,26 +20,23 @@ def prepare_data():
     # extract the day of the year (0-364.2422)
     df['DayOfYear'] = df['DATE'].dt.dayofyear - 1
 
-    # leap years 
-    leap_years = [2020, 2024]
-    df['DayOfYear'] = df.apply(
-        lambda row: row['DayOfYear'] - 1 if row['DATE'].year in leap_years and row['DayOfYear'] >= 60 else row['DayOfYear'],
-        axis=1
-    )
+    def is_leap_year(year):
+        return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
-    # normalize DayOfYear to 0-2π for the sine function
-    df['DayOfYear'] = df['DayOfYear'] / 365.2422
+    df["Year"] = df["DATE"].dt.year  # Extract year
+    df["TotalDays"] = df["Year"].apply(lambda y: 366 if is_leap_year(y) else 365)  # Get total days in year
+
+    df["DayOfYear"] = (df["DayOfYear"] * 365) // df["TotalDays"]
 
     # normalize TMAX
     scaler = MinMaxScaler(feature_range=(-1, 1))
-    #scaler = StandardScaler()
     df['TMAX'] = scaler.fit_transform(df[['TMAX']])
 
     # set up train, val, and test data
-    train_data = df[df['DATE'] <= '2023-12-31']
+    train_data = df[df['DATE'] <= '2022-12-31']
 
-    val_data = df[(df['DATE'] >= '2024-01-01') & (df['DATE'] <= '2024-12-31')]
-    test_data = df[df['DATE'] >= '2025-01-01']
+    val_data = df[(df['DATE'] >= '2023-01-01') & (df['DATE'] <= '2023-12-31')]
+    test_data = df[(df['DATE'] >= '2024-01-01') & (df['DATE'] <= '2024-12-31')]
 
     X_train = train_data['DayOfYear'].values
     Y_train = train_data['TMAX'].values
@@ -118,9 +116,8 @@ def train_and_test_model(config, prepare_data_fn=None):
     
     predictions = scaler.inverse_transform(predictions)
     Y_test = scaler.inverse_transform(Y_test.reshape(-1, 1))
+    print(predictions)
 
-    print(f"Predicted: {predictions}")
-    print(f"Actual: {Y_test}")
 
     mae = mean_absolute_error(Y_test, predictions)
     mse = mean_squared_error(Y_test, predictions)
@@ -144,6 +141,9 @@ def plot_actual_vs_pred_temps(test_dates, actual_tmax, predicted_tmax, save_name
     plt.figure(figsize=(12, 6))
     plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", marker='o', linestyle="-")
     plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", marker='s', linestyle="--")
+
+    #plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", linestyle="-")
+    #plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", linestyle="--")
     plt.xlabel("Date")
     plt.ylabel("Temperature (°F)")
     plt.title("Boston High Temperature Prediction using Simple Predictor")
