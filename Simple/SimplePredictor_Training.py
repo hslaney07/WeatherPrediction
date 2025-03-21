@@ -4,8 +4,8 @@ import os
 from train import train_and_test_model
 
 # setting up configurations for this experiment
-epochs_list = [500, 1000, 2000, 3000, 5000, 10000]
-lrs = [0.001, 0.01, 0.0001, 0.00001]
+epochs_list = [100, 300, 500, 700, 1000, 2000, 5000]
+lrs = [0.001, 0.01, 0.0001]
 
 all_configs = [
     {

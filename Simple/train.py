@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -26,14 +27,16 @@ def prepare_data():
     )
 
     # normalize DayOfYear to 0-2π for the sine function
-    df['DayOfYear'] = df['DayOfYear'] / 365.2422 * 2 * np.pi
+    df['DayOfYear'] = df['DayOfYear'] / 365.2422
 
     # normalize TMAX
     scaler = MinMaxScaler(feature_range=(-1, 1))
+    #scaler = StandardScaler()
     df['TMAX'] = scaler.fit_transform(df[['TMAX']])
 
     # set up train, val, and test data
     train_data = df[df['DATE'] <= '2023-12-31']
+
     val_data = df[(df['DATE'] >= '2024-01-01') & (df['DATE'] <= '2024-12-31')]
     test_data = df[df['DATE'] >= '2025-01-01']
 
@@ -101,7 +104,7 @@ def train_and_test_model(config, prepare_data_fn=None):
             train_predictions = scaler.inverse_transform(train_predictions)
             Y_train_original = scaler.inverse_transform(Y_train.numpy().reshape(-1, 1))
 
-            train_dates = df["DATE"][-len(Y_train):].values
+            train_dates = df["DATE"][:len(Y_train)].values
 
             save_name = f"images/{experiment_name}/training_lr{lr}_e{epochs}.png"
             plot_actual_vs_pred_temps(train_dates, Y_train_original, train_predictions, save_name=save_name)
@@ -139,8 +142,8 @@ def plot_actual_vs_pred_temps(test_dates, actual_tmax, predicted_tmax, save_name
     #test_dates = [datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d") for date in test_dates]
 
     plt.figure(figsize=(12, 6))
-    plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", linestyle="-")
-    plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", linestyle="--")
+    plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", marker='o', linestyle="-")
+    plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", marker='s', linestyle="--")
     plt.xlabel("Date")
     plt.ylabel("Temperature (°F)")
     plt.title("Boston High Temperature Prediction using Simple Predictor")

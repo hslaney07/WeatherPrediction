@@ -3,6 +3,7 @@ import itertools
 import os
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 import torch
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -28,8 +29,8 @@ def prepare_data():
         axis=1
     )
 
-    # normalize DayOfYear to 0-2π for the sine function
-    df['DayOfYear'] = df['DayOfYear'] / 365.2422 * 2 * np.pi
+    # normalize DayOfYear for the sine function
+    df['DayOfYear'] = df['DayOfYear'] / 365.2422 
 
     # normalize TMAX
     scaler = MinMaxScaler(feature_range=(-1, 1))
