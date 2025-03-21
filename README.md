@@ -181,7 +181,7 @@ Here is how it performs on the testing data. Since sine predictors look at yearl
 
 **Test MSE**: 275.16013
 
-![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_Testing.png)
+![Simple Sine Predictor Training - Boston Temperature High vs Prediction](images_for_readme/Predictor_On_Testing.png)
 
 ## Vanilla RNN
 
