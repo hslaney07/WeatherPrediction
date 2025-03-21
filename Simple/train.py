@@ -17,6 +17,9 @@ def prepare_data():
     # get desired columns
     df = df[["DATE", "TMAX"]].dropna()
 
+    # for training, we'll only use complete years - so ignore jan/2025 - mar/2025
+    df = df[df['DATE'] < '2025-01-01']
+
     # extract the day of the year (0-364.2422)
     df['DayOfYear'] = df['DATE'].dt.dayofyear - 1
 
@@ -139,11 +142,11 @@ def plot_actual_vs_pred_temps(test_dates, actual_tmax, predicted_tmax, save_name
     #test_dates = [datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d") for date in test_dates]
 
     plt.figure(figsize=(12, 6))
-    plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", marker='o', linestyle="-")
-    plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", marker='s', linestyle="--")
+    #plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", marker='o', linestyle="-")
+    #plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", marker='s', linestyle="--")
 
-    #plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", linestyle="-")
-    #plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", linestyle="--")
+    plt.plot(test_dates, actual_tmax, label="Actual TMAX", color="blue", linestyle="-")
+    plt.plot(test_dates, predicted_tmax, label="Predicted TMAX", color="red", linestyle="--")
     plt.xlabel("Date")
     plt.ylabel("Temperature (°F)")
     plt.title("Boston High Temperature Prediction using Simple Predictor")
